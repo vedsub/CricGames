@@ -1,0 +1,48 @@
+{
+    "rules": {
+        "rooms": {
+            ".indexOn": [
+                "createdAt"
+            ],
+            "$roomId": {
+                ".read": true,
+                ".write": "!data.exists() || !auth || data.child('host').val() === auth.uid || data.child('guest').val() === auth.uid",
+                ".validate": "newData.hasChildren(['host', 'status', 'turn', 'grid', 'createdAt'])",
+                "host": {
+                    ".validate": "newData.isString()"
+                },
+                "guest": {
+                    ".validate": "newData.isString() || newData.val() === null"
+                },
+                "status": {
+                    ".validate": "newData.isString()"
+                },
+                "turn": {
+                    ".validate": "newData.isString()"
+                },
+                "grid": {
+                    ".validate": true
+                },
+                "rowTags": {
+                    ".validate": true
+                },
+                "colTags": {
+                    ".validate": true
+                },
+                "createdAt": {
+                    ".validate": "newData.isNumber()"
+                },
+                "hostScore": {
+                    ".validate": "newData.isNumber()"
+                },
+                "guestScore": {
+                    ".validate": "newData.isNumber()"
+                }
+            }
+        },
+        "$other": {
+            ".read": false,
+            ".write": false
+        }
+    }
+}

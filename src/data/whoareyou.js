@@ -1,10 +1,11 @@
 // Auto-generated Who Are You players from Cricsheet IPL data
-// Generated: 2025-12-24T19:11:55.869Z
+// Generated: 2025-12-25T14:45:47.678Z
 
 export const whoAreYouPlayers = [
   {
     "id": 1,
     "name": "V Kohli",
+    "cricinfoId": "253802",
     "nationality": "India",
     "league": "IPL",
     "team": "RCB",
@@ -16,6 +17,7 @@ export const whoAreYouPlayers = [
   {
     "id": 2,
     "name": "RG Sharma",
+    "cricinfoId": "34102",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
@@ -27,6 +29,7 @@ export const whoAreYouPlayers = [
   {
     "id": 3,
     "name": "RA Jadeja",
+    "cricinfoId": "234675",
     "nationality": "India",
     "league": "IPL",
     "team": "CSK",
@@ -38,6 +41,7 @@ export const whoAreYouPlayers = [
   {
     "id": 4,
     "name": "S Dhawan",
+    "cricinfoId": "28235",
     "nationality": "India",
     "league": "IPL",
     "team": "SRH",
@@ -49,6 +53,7 @@ export const whoAreYouPlayers = [
   {
     "id": 5,
     "name": "SP Narine",
+    "cricinfoId": "230558",
     "nationality": "West Indies",
     "league": "IPL",
     "team": "KKR",
@@ -60,6 +65,7 @@ export const whoAreYouPlayers = [
   {
     "id": 6,
     "name": "DA Warner",
+    "cricinfoId": "219889",
     "nationality": "Australia",
     "league": "IPL",
     "team": "SRH",
@@ -71,17 +77,19 @@ export const whoAreYouPlayers = [
   {
     "id": 7,
     "name": "SR Watson",
+    "cricinfoId": "8180",
     "nationality": "India",
     "league": "IPL",
     "team": "RCB",
     "role": "Batter",
-    "age": 32,
-    "jerseyNumber": 48,
+    "age": 39,
+    "jerseyNumber": 63,
     "image": "🏏"
   },
   {
     "id": 8,
     "name": "DJ Bravo",
+    "cricinfoId": "51439",
     "nationality": "West Indies",
     "league": "IPL",
     "team": "CSK",
@@ -93,6 +101,7 @@ export const whoAreYouPlayers = [
   {
     "id": 9,
     "name": "AD Russell",
+    "cricinfoId": "276298",
     "nationality": "West Indies",
     "league": "IPL",
     "team": "KKR",
@@ -104,6 +113,7 @@ export const whoAreYouPlayers = [
   {
     "id": 10,
     "name": "SK Raina",
+    "cricinfoId": "33335",
     "nationality": "India",
     "league": "IPL",
     "team": "CSK",
@@ -115,6 +125,7 @@ export const whoAreYouPlayers = [
   {
     "id": 11,
     "name": "YS Chahal",
+    "cricinfoId": "430246",
     "nationality": "India",
     "league": "IPL",
     "team": "RCB",
@@ -126,6 +137,7 @@ export const whoAreYouPlayers = [
   {
     "id": 12,
     "name": "R Ashwin",
+    "cricinfoId": "26421",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
@@ -137,6 +149,7 @@ export const whoAreYouPlayers = [
   {
     "id": 13,
     "name": "CH Gayle",
+    "cricinfoId": "51880",
     "nationality": "West Indies",
     "league": "IPL",
     "team": "RCB",
@@ -148,6 +161,7 @@ export const whoAreYouPlayers = [
   {
     "id": 14,
     "name": "PP Chawla",
+    "cricinfoId": "32966",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
@@ -159,6 +173,7 @@ export const whoAreYouPlayers = [
   {
     "id": 15,
     "name": "B Kumar",
+    "cricinfoId": "326016",
     "nationality": "India",
     "league": "IPL",
     "team": "SRH",
@@ -170,6 +185,7 @@ export const whoAreYouPlayers = [
   {
     "id": 16,
     "name": "KL Rahul",
+    "cricinfoId": "422108",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
@@ -181,6 +197,7 @@ export const whoAreYouPlayers = [
   {
     "id": 17,
     "name": "AB de Villiers",
+    "cricinfoId": "44936",
     "nationality": "South Africa",
     "league": "IPL",
     "team": "RCB",
@@ -192,6 +209,7 @@ export const whoAreYouPlayers = [
   {
     "id": 18,
     "name": "KA Pollard",
+    "cricinfoId": "230559",
     "nationality": "West Indies",
     "league": "IPL",
     "team": "MI",
@@ -203,6 +221,7 @@ export const whoAreYouPlayers = [
   {
     "id": 19,
     "name": "MS Dhoni",
+    "cricinfoId": "28081",
     "nationality": "India",
     "league": "IPL",
     "team": "CSK",
@@ -214,17 +233,19 @@ export const whoAreYouPlayers = [
   {
     "id": 20,
     "name": "AR Patel",
+    "cricinfoId": "554691",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
     "role": "Bowler",
     "age": 30,
-    "jerseyNumber": 81,
+    "jerseyNumber": 34,
     "image": "🏏"
   },
   {
     "id": 21,
     "name": "RV Uthappa",
+    "cricinfoId": "35582",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
@@ -236,6 +257,7 @@ export const whoAreYouPlayers = [
   {
     "id": 22,
     "name": "F du Plessis",
+    "cricinfoId": "44828",
     "nationality": "South Africa",
     "league": "IPL",
     "team": "CSK",
@@ -247,6 +269,7 @@ export const whoAreYouPlayers = [
   {
     "id": 23,
     "name": "A Mishra",
+    "cricinfoId": "31107",
     "nationality": "India",
     "league": "IPL",
     "team": "DC",
@@ -258,6 +281,7 @@ export const whoAreYouPlayers = [
   {
     "id": 24,
     "name": "JJ Bumrah",
+    "cricinfoId": "625383",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
@@ -269,6 +293,7 @@ export const whoAreYouPlayers = [
   {
     "id": 25,
     "name": "HH Pandya",
+    "cricinfoId": "625371",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
@@ -280,6 +305,7 @@ export const whoAreYouPlayers = [
   {
     "id": 26,
     "name": "SV Samson",
+    "cricinfoId": "425943",
     "nationality": "India",
     "league": "IPL",
     "team": "DC",
@@ -291,6 +317,7 @@ export const whoAreYouPlayers = [
   {
     "id": 27,
     "name": "AM Rahane",
+    "cricinfoId": "277916",
     "nationality": "India",
     "league": "IPL",
     "team": "RR",
@@ -302,17 +329,19 @@ export const whoAreYouPlayers = [
   {
     "id": 28,
     "name": "Harbhajan Singh",
+    "cricinfoId": "29264",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
     "role": "Bowler",
-    "age": 36,
-    "jerseyNumber": 74,
+    "age": 39,
+    "jerseyNumber": 58,
     "image": "🏏"
   },
   {
     "id": 29,
     "name": "Rashid Khan",
+    "cricinfoId": "42421",
     "nationality": "Afghanistan",
     "league": "IPL",
     "team": "SRH",
@@ -324,6 +353,7 @@ export const whoAreYouPlayers = [
   {
     "id": 30,
     "name": "KD Karthik",
+    "cricinfoId": "30045",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
@@ -335,6 +365,7 @@ export const whoAreYouPlayers = [
   {
     "id": 31,
     "name": "AT Rayudu",
+    "cricinfoId": "33141",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
@@ -346,6 +377,7 @@ export const whoAreYouPlayers = [
   {
     "id": 32,
     "name": "SL Malinga",
+    "cricinfoId": "49758",
     "nationality": "Sri Lanka",
     "league": "IPL",
     "team": "MI",
@@ -357,6 +389,7 @@ export const whoAreYouPlayers = [
   {
     "id": 33,
     "name": "SA Yadav",
+    "cricinfoId": "446507",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
@@ -368,28 +401,31 @@ export const whoAreYouPlayers = [
   {
     "id": 34,
     "name": "YK Pathan",
+    "cricinfoId": "32498",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
     "role": "Batter",
     "age": 30,
-    "jerseyNumber": 59,
+    "jerseyNumber": 91,
     "image": "🏏"
   },
   {
     "id": 35,
     "name": "G Gambhir",
+    "cricinfoId": "28763",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
     "role": "Batter",
-    "age": 39,
-    "jerseyNumber": 47,
+    "age": 38,
+    "jerseyNumber": 64,
     "image": "🏏"
   },
   {
     "id": 36,
     "name": "JC Buttler",
+    "cricinfoId": "308967",
     "nationality": "England",
     "league": "IPL",
     "team": "MI",
@@ -401,39 +437,43 @@ export const whoAreYouPlayers = [
   {
     "id": 37,
     "name": "KH Pandya",
+    "cricinfoId": "471342",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
     "role": "Bowler",
-    "age": 26,
-    "jerseyNumber": 35,
+    "age": 36,
+    "jerseyNumber": 37,
     "image": "🏏"
   },
   {
     "id": 38,
     "name": "JH Kallis",
+    "cricinfoId": "45789",
     "nationality": "India",
     "league": "IPL",
     "team": "RCB",
     "role": "Batter",
-    "age": 29,
-    "jerseyNumber": 63,
+    "age": 37,
+    "jerseyNumber": 67,
     "image": "🏏"
   },
   {
     "id": 39,
     "name": "HV Patel",
+    "cricinfoId": "390481",
     "nationality": "India",
     "league": "IPL",
     "team": "RCB",
     "role": "Bowler",
-    "age": 35,
-    "jerseyNumber": 40,
+    "age": 28,
+    "jerseyNumber": 68,
     "image": "🏏"
   },
   {
     "id": 40,
     "name": "MK Pandey",
+    "cricinfoId": "290630",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
@@ -445,6 +485,7 @@ export const whoAreYouPlayers = [
   {
     "id": 41,
     "name": "Shubman Gill",
+    "cricinfoId": "1070173",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
@@ -456,6 +497,7 @@ export const whoAreYouPlayers = [
   {
     "id": 42,
     "name": "GJ Maxwell",
+    "cricinfoId": "325026",
     "nationality": "Australia",
     "league": "IPL",
     "team": "PBKS",
@@ -467,17 +509,19 @@ export const whoAreYouPlayers = [
   {
     "id": 43,
     "name": "UT Yadav",
+    "cricinfoId": "376116",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
     "role": "Bowler",
-    "age": 33,
-    "jerseyNumber": 59,
+    "age": 32,
+    "jerseyNumber": 11,
     "image": "🏏"
   },
   {
     "id": 44,
     "name": "SS Iyer",
+    "cricinfoId": "642519",
     "nationality": "India",
     "league": "IPL",
     "team": "DC",
@@ -489,39 +533,43 @@ export const whoAreYouPlayers = [
   {
     "id": 45,
     "name": "Sandeep Sharma",
+    "cricinfoId": "438362",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
     "role": "Bowler",
-    "age": 28,
-    "jerseyNumber": 54,
+    "age": 29,
+    "jerseyNumber": 90,
     "image": "🏏"
   },
   {
     "id": 46,
     "name": "TA Boult",
+    "cricinfoId": "277912",
     "nationality": "India",
     "league": "IPL",
     "team": "KKR",
     "role": "Bowler",
-    "age": 30,
-    "jerseyNumber": 50,
+    "age": 34,
+    "jerseyNumber": 22,
     "image": "🏏"
   },
   {
     "id": 47,
     "name": "Yuvraj Singh",
+    "cricinfoId": "1246442",
     "nationality": "India",
     "league": "IPL",
     "team": "SRH",
     "role": "Batter",
-    "age": 39,
-    "jerseyNumber": 56,
+    "age": 31,
+    "jerseyNumber": 47,
     "image": "🏏"
   },
   {
     "id": 48,
     "name": "RR Pant",
+    "cricinfoId": "931581",
     "nationality": "India",
     "league": "IPL",
     "team": "DC",
@@ -533,17 +581,19 @@ export const whoAreYouPlayers = [
   {
     "id": 49,
     "name": "MM Sharma",
+    "cricinfoId": "537119",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
     "role": "Bowler",
-    "age": 39,
-    "jerseyNumber": 90,
+    "age": 37,
+    "jerseyNumber": 70,
     "image": "🏏"
   },
   {
     "id": 50,
     "name": "Mohammed Shami",
+    "cricinfoId": "481896",
     "nationality": "India",
     "league": "IPL",
     "team": "DC",
@@ -555,6 +605,7 @@ export const whoAreYouPlayers = [
   {
     "id": 51,
     "name": "Q de Kock",
+    "cricinfoId": "379143",
     "nationality": "South Africa",
     "league": "IPL",
     "team": "RCB",
@@ -566,6 +617,7 @@ export const whoAreYouPlayers = [
   {
     "id": 52,
     "name": "K Rabada",
+    "cricinfoId": "550215",
     "nationality": "South Africa",
     "league": "IPL",
     "team": "DC",
@@ -577,89 +629,97 @@ export const whoAreYouPlayers = [
   {
     "id": 53,
     "name": "IK Pathan",
+    "cricinfoId": "32685",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
     "role": "Bowler",
-    "age": 33,
-    "jerseyNumber": 90,
+    "age": 26,
+    "jerseyNumber": 81,
     "image": "🏏"
   },
   {
     "id": 54,
     "name": "MP Stoinis",
+    "cricinfoId": "325012",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
     "role": "Batter",
-    "age": 32,
-    "jerseyNumber": 7,
+    "age": 34,
+    "jerseyNumber": 70,
     "image": "🏏"
   },
   {
     "id": 55,
     "name": "N Rana",
+    "cricinfoId": "604527",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
     "role": "Batter",
-    "age": 31,
-    "jerseyNumber": 72,
+    "age": 28,
+    "jerseyNumber": 81,
     "image": "🏏"
   },
   {
     "id": 56,
     "name": "JA Morkel",
+    "cricinfoId": "46248",
     "nationality": "India",
     "league": "IPL",
     "team": "CSK",
     "role": "Bowler",
-    "age": 34,
-    "jerseyNumber": 68,
+    "age": 37,
+    "jerseyNumber": 79,
     "image": "🏏"
   },
   {
     "id": 57,
     "name": "DA Miller",
+    "cricinfoId": "321777",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
     "role": "Batter",
-    "age": 30,
-    "jerseyNumber": 29,
+    "age": 31,
+    "jerseyNumber": 50,
     "image": "🏏"
   },
   {
     "id": 58,
     "name": "CH Morris",
+    "cricinfoId": "439952",
     "nationality": "India",
     "league": "IPL",
     "team": "DC",
     "role": "Bowler",
-    "age": 28,
-    "jerseyNumber": 91,
+    "age": 31,
+    "jerseyNumber": 26,
     "image": "🏏"
   },
   {
     "id": 59,
     "name": "R Vinay Kumar",
+    "cricinfoId": "35731",
     "nationality": "India",
     "league": "IPL",
     "team": "MI",
     "role": "Bowler",
     "age": 27,
-    "jerseyNumber": 3,
+    "jerseyNumber": 75,
     "image": "🏏"
   },
   {
     "id": 60,
     "name": "WP Saha",
+    "cricinfoId": "279810",
     "nationality": "India",
     "league": "IPL",
     "team": "PBKS",
     "role": "Batter",
-    "age": 38,
-    "jerseyNumber": 74,
+    "age": 33,
+    "jerseyNumber": 64,
     "image": "🏏"
   }
 ];

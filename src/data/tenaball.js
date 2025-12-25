@@ -1,5 +1,5 @@
 // Auto-generated Tenaball questions from Cricsheet IPL data
-// Generated: 2025-12-24T19:11:55.868Z
+// Generated: 2025-12-25T14:45:47.677Z
 
 export const tenaballQuestions = [
   {

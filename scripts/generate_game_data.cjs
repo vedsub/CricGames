@@ -34,8 +34,41 @@ const TEAM_FULL_NAMES = {
     'LSG': 'Lucknow Super Giants'
 };
 
+const PEOPLE_CSV = './people.csv';
+
+// Load people.csv to get cricinfo IDs
+function loadPeopleData() {
+    const peopleMap = new Map();
+    try {
+        const csvContent = fs.readFileSync(PEOPLE_CSV, 'utf-8');
+        const lines = csvContent.split('\n');
+        const headers = lines[0].split(',');
+
+        const nameIndex = headers.indexOf('name');
+        const cricinfoIndex = headers.indexOf('key_cricinfo');
+
+        for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(',');
+            if (cols.length > cricinfoIndex) {
+                const name = cols[nameIndex];
+                const cricinfoId = cols[cricinfoIndex];
+                if (name && cricinfoId) {
+                    peopleMap.set(name, cricinfoId);
+                }
+            }
+        }
+        console.log(`Loaded ${peopleMap.size} player IDs from people.csv`);
+    } catch (err) {
+        console.error('Error loading people.csv:', err.message);
+    }
+    return peopleMap;
+}
+
+const cricinfoIds = loadPeopleData();
+
 // Player stats storage
 const playerStats = new Map();
+
 
 // Process all matches
 function processMatches() {
@@ -279,10 +312,12 @@ function generateWhoAreYouPlayers() {
         };
 
         const primaryTeam = Array.from(p.teams)[0] || 'MI';
+        const cricinfoId = cricinfoIds.get(p.name) || null;
 
         return {
             id: i + 1,
             name: p.name,
+            cricinfoId: cricinfoId,
             nationality: details.nationality,
             league: 'IPL',
             team: primaryTeam,

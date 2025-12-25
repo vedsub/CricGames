@@ -4,6 +4,49 @@ const path = require('path');
 
 const IPL_DATA_DIR = './ipl_data';
 const OUTPUT_FILE = '../src/data/players.js';
+const PEOPLE_CSV = './people.csv';
+
+// Load people.csv to get full names and cricinfo IDs
+function loadPeopleData() {
+    const peopleMap = new Map();
+    try {
+        const csvContent = fs.readFileSync(PEOPLE_CSV, 'utf-8');
+        const lines = csvContent.split('\n');
+        const headers = lines[0].split(',');
+
+        const idIndex = headers.indexOf('identifier');
+        const nameIndex = headers.indexOf('name');
+        const cricinfoIndex = headers.indexOf('key_cricinfo');
+
+        for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(',');
+            if (cols.length > cricinfoIndex) {
+                const id = cols[idIndex];
+                const name = cols[nameIndex];
+                const cricinfoId = cols[cricinfoIndex];
+                if (id && name) {
+                    peopleMap.set(id, {
+                        fullName: name,
+                        cricinfoId: cricinfoId || null
+                    });
+                }
+            }
+        }
+        console.log(`Loaded ${peopleMap.size} players from people.csv`);
+    } catch (err) {
+        console.error('Error loading people.csv:', err.message);
+    }
+    return peopleMap;
+}
+
+// Generate player image URL from cricinfo ID
+function getPlayerImageUrl(cricinfoId) {
+    if (!cricinfoId) return null;
+    const folder = Math.floor(parseInt(cricinfoId) / 100) * 100;
+    return `https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_160/lsci/db/PICTURES/CMS/${folder}00/${cricinfoId}.png`;
+}
+
+const peopleData = loadPeopleData();
 
 // Team name normalization
 const TEAM_ALIASES = {
@@ -227,15 +270,21 @@ const playerMap = processMatches();
 const minMatches = 5;
 const players = Array.from(playerMap.values())
     .filter(p => p.matches >= minMatches)
-    .map(p => ({
-        id: p.id,
-        name: p.name,
-        teams: Array.from(p.teams),
-        matches: p.matches,
-        years: Array.from(p.years).sort(),
-        tags: generateTags(p),
-        image_url: `https://img1.hscicdn.com/image/upload/f_auto,t_h_100/lsci/db/PICTURES/CMS/316500/316503.png`
-    }))
+    .map(p => {
+        const personData = peopleData.get(p.id);
+        const fullName = personData?.fullName || p.name;
+        const cricinfoId = personData?.cricinfoId;
+        return {
+            id: p.id,
+            name: fullName,
+            cricinfoId: cricinfoId || null,
+            teams: Array.from(p.teams),
+            matches: p.matches,
+            years: Array.from(p.years).sort(),
+            tags: generateTags(p),
+            image_url: getPlayerImageUrl(cricinfoId)
+        };
+    })
     .sort((a, b) => b.matches - a.matches);
 
 console.log(`\nGenerated ${players.length} players with ${minMatches}+ matches`);

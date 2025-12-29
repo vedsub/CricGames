@@ -1,17 +1,21 @@
-/* Google Fonts - Inter + Oswald for sports headers */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap');
+/* Google Fonts - Inter for clean typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @import "tailwindcss";
 
-/* Custom Theme Variables */
+/* Clean Design System Variables */
 :root {
-  --purple-darkest: #0a0612;
-  --purple-darker: #0f0a1a;
-  --purple-dark: #1a1028;
-  --purple-medium: #251438;
-  --purple-light: #3d2259;
-  --neon-green: #39ff14;
-  --neon-green-dim: #2ed610;
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #171717;
+  --bg-card: #1a1a1a;
+  --bg-input: #262626;
+  --accent: #22c55e;
+  --accent-hover: #16a34a;
+  --border: #333333;
+  --border-light: #404040;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
 }
 
 /* Base Styles */
@@ -22,130 +26,80 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, var(--purple-darkest) 0%, var(--purple-darker) 50%, var(--purple-dark) 100%);
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-primary);
   min-height: 100vh;
-  color: #ffffff;
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Sports Font for Headers */
-.font-sports {
-  font-family: 'Oswald', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
+/* Typography - Using Inter for everything */
 h1,
 h2,
-h3 {
-  font-family: 'Oswald', sans-serif;
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--purple-darker);
+  background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--purple-light);
+  background: var(--border-light);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-green);
+  background: var(--text-muted);
 }
 
-/* Utility Classes */
-.neon-glow {
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3), 0 0 40px rgba(57, 255, 20, 0.1);
+/* Clean Card Utility */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
-.neon-text-glow {
-  text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+.card-elevated {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
+/* Legacy glass-card - now clean solid */
 .glass-card {
-  background: rgba(37, 20, 56, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
 }
 
-/* Pop Animation for Grid Cells */
-@keyframes pop-in {
-  0% {
-    transform: scale(0.5);
+/* Subtle Animation for Grid Cells */
+@keyframes fade-in {
+  from {
     opacity: 0;
+    transform: translateY(4px);
   }
 
-  50% {
-    transform: scale(1.1);
-  }
-
-  100% {
-    transform: scale(1);
+  to {
     opacity: 1;
-  }
-}
-
-.animate-pop-in {
-  animation: pop-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-}
-
-/* Reveal Animation for Tenaball Slots */
-@keyframes reveal-slot {
-  0% {
-    transform: translateY(-20px) scale(0.8);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-.animate-reveal {
-  animation: reveal-slot 0.4s ease-out forwards;
-}
-
-/* Slide Up Animation */
-@keyframes slide-up {
-  0% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-
-  100% {
     transform: translateY(0);
-    opacity: 1;
   }
 }
 
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out forwards;
-}
-
-/* Pulse Animation for Turn Indicator */
-@keyframes pulse-glow {
-
-  0%,
-  100% {
-    box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
-  }
-
-  50% {
-    box-shadow: 0 0 25px rgba(57, 255, 20, 0.8);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s infinite;
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out forwards;
 }
 
 /* Shake Animation for Wrong Answer */
@@ -158,17 +112,27 @@ h3 {
 
   20%,
   60% {
-    transform: translateX(-5px);
+    transform: translateX(-4px);
   }
 
   40%,
   80% {
-    transform: translateX(5px);
+    transform: translateX(4px);
   }
 }
 
 .animate-shake {
-  animation: shake 0.4s ease-in-out;
+  animation: shake 0.3s ease-in-out;
+}
+
+/* Focus Styles */
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Mobile Responsive */
@@ -180,19 +144,10 @@ h3 {
   h2 {
     font-size: 1.5rem !important;
   }
-
-  .glass-card {
-    padding: 1rem;
-  }
 }
 
 @media (max-width: 640px) {
   h1 {
     font-size: 1.75rem !important;
-  }
-
-  /* Stack grid items on mobile */
-  .mobile-stack {
-    grid-template-columns: 1fr !important;
   }
 }

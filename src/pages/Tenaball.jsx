@@ -1,10 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { getRandomQuestion, matchPlayerName } from '../data/tenaball';
 import { bigCelebrate } from '../utils/confetti';
+import Container from '../components/ui/Container';
 
+/**
+ * Tenaball Layout:
+ * - Centered panel, max-width 640px
+ * - Vertical flow: Title → Lives/Found → Input+Button → List
+ * - List is secondary (below the main interaction)
+ */
 function Tenaball() {
     const [question, setQuestion] = useState(null);
-    const [revealed, setRevealed] = useState([]); // Array of revealed rank numbers
+    const [revealed, setRevealed] = useState([]);
     const [lives, setLives] = useState(3);
     const [guess, setGuess] = useState('');
     const [message, setMessage] = useState(null);
@@ -13,7 +20,6 @@ function Tenaball() {
     const [guessedNames, setGuessedNames] = useState([]);
     const inputRef = useRef(null);
 
-    // Initialize game
     useEffect(() => {
         startNewGame();
     }, []);
@@ -31,7 +37,6 @@ function Tenaball() {
         inputRef.current?.focus();
     };
 
-    // Check for win
     useEffect(() => {
         if (question && revealed.length === 10) {
             setHasWon(true);
@@ -40,7 +45,6 @@ function Tenaball() {
         }
     }, [revealed, question]);
 
-    // Check for loss
     useEffect(() => {
         if (lives === 0) {
             setGameOver(true);
@@ -54,18 +58,15 @@ function Tenaball() {
         const match = matchPlayerName(guess, question.answers);
 
         if (match) {
-            // Check if already revealed
             if (revealed.includes(match.rank)) {
                 setMessage({ type: 'error', text: `${match.name} already revealed!` });
                 setLives(prev => prev - 1);
             } else {
-                // Correct guess!
                 setRevealed(prev => [...prev, match.rank]);
-                setMessage({ type: 'success', text: `Correct! ${match.name} is #${match.rank}` });
+                setMessage({ type: 'success', text: `Correct! #${match.rank}` });
                 setGuessedNames(prev => [...prev, match.name.toLowerCase()]);
             }
         } else {
-            // Check if this exact name was already guessed wrong
             if (guessedNames.includes(guess.toLowerCase().trim())) {
                 setMessage({ type: 'error', text: 'Already guessed that!' });
             } else {
@@ -81,77 +82,64 @@ function Tenaball() {
 
     if (!question) {
         return (
-            <div className="min-h-screen pt-32 flex items-center justify-center">
-                <div className="animate-spin w-12 h-12 border-4 border-[#39ff14] border-t-transparent rounded-full"></div>
-            </div>
+            <Container>
+                <div className="py-16 text-center text-neutral-400">Loading...</div>
+            </Container>
         );
     }
 
     return (
-        <div className="min-h-screen pt-28 pb-16 px-6">
-            <div className="max-w-3xl mx-auto">
-                {/* Header */}
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl md:text-5xl font-black mb-2 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                        Tenaball
-                    </h1>
-                    <p className="text-gray-400 text-sm">Guess the Top 10!</p>
+        <Container>
+            {/* Centered Panel - max 640px */}
+            <div className="max-w-[640px] mx-auto py-8">
+
+                {/* Title */}
+                <div className="text-center mb-6">
+                    <h1 className="text-2xl font-bold text-white mb-2">Tenaball</h1>
+                    <p className="text-neutral-400">{question.question}</p>
                 </div>
 
-                {/* Question */}
-                <div className="glass-card rounded-2xl p-6 mb-6 text-center">
-                    <p className="text-xl md:text-2xl font-bold text-white">
-                        {question.question}
-                    </p>
-                </div>
-
-                {/* Lives & Progress */}
-                <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-2">
-                        <span className="text-gray-400 text-sm">Lives:</span>
-                        <div className="flex gap-1">
-                            {[...Array(3)].map((_, i) => (
-                                <span
-                                    key={i}
-                                    className={`text-2xl transition-all ${i < lives ? 'text-red-500' : 'text-gray-700 opacity-50'}`}
-                                >
-                                    ❤️
-                                </span>
-                            ))}
+                {/* Status Card: Lives + Found */}
+                <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 mb-6">
+                    <div className="flex items-center justify-between text-sm">
+                        <div>
+                            <span className="text-neutral-500">Lives: </span>
+                            <span className="text-white font-medium">{lives}/3</span>
+                        </div>
+                        <div>
+                            <span className="text-neutral-500">Found: </span>
+                            <span className="text-green-400 font-medium">{revealed.length}/10</span>
                         </div>
                     </div>
-                    <div className="text-sm text-gray-400">
-                        <span className="text-[#39ff14] font-bold">{revealed.length}</span>/10 found
-                    </div>
                 </div>
 
-                {/* Message Toast */}
+                {/* Message */}
                 {message && (
-                    <div className={`mb-4 p-3 rounded-xl text-center font-semibold ${message.type === 'success'
-                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                        : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                    <div className={`mb-4 p-3 rounded-lg text-sm text-center ${message.type === 'success'
+                            ? 'bg-green-500/10 text-green-400'
+                            : 'bg-red-500/10 text-red-400'
                         }`}>
                         {message.text}
                     </div>
                 )}
 
-                {/* Guess Input */}
+                {/* Input + Guess Button - Grouped */}
                 {!gameOver && (
                     <form onSubmit={handleGuess} className="mb-8">
-                        <div className="flex gap-3">
+                        <div className="flex gap-2">
                             <input
                                 ref={inputRef}
                                 type="text"
                                 value={guess}
                                 onChange={(e) => setGuess(e.target.value)}
                                 placeholder="Enter player name..."
-                                className="flex-1 px-5 py-4 rounded-xl bg-[#1a1028] border-2 border-[#3d2259] text-white placeholder-gray-500 focus:outline-none focus:border-[#39ff14] text-lg"
+                                className="flex-1 px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white text-sm focus:outline-none focus:border-green-500"
                                 autoComplete="off"
                             />
                             <button
                                 type="submit"
                                 disabled={!guess.trim()}
-                                className="px-6 py-4 rounded-xl bg-[#39ff14] text-[#0a0612] font-bold hover:bg-[#2ed610] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 disabled:bg-neutral-700 disabled:text-neutral-500"
                             >
                                 Guess
                             </button>
@@ -159,93 +147,73 @@ function Tenaball() {
                     </form>
                 )}
 
-                {/* Top 10 Slots */}
-                <div className="space-y-3">
+                {/* Top 10 List - Secondary */}
+                <div className="space-y-2">
                     {question.answers.map((answer) => {
                         const isRevealed = revealed.includes(answer.rank);
                         return (
                             <div
                                 key={answer.rank}
-                                className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-500 ${isRevealed
-                                    ? 'bg-[#39ff14]/10 border-2 border-[#39ff14]/50'
-                                    : 'bg-[#1a1028] border-2 border-[#3d2259]'
+                                className={`flex items-center gap-4 px-4 py-3 rounded-lg ${isRevealed
+                                        ? 'bg-green-500/10 border border-green-500/20'
+                                        : 'bg-neutral-900 border border-neutral-800'
                                     }`}
                             >
-                                {/* Rank */}
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg ${isRevealed
-                                    ? 'bg-[#39ff14] text-[#0a0612]'
-                                    : 'bg-[#251438] text-gray-400'
+                                <div className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${isRevealed ? 'bg-green-500 text-white' : 'bg-neutral-800 text-neutral-500'
                                     }`}>
                                     {answer.rank}
                                 </div>
-
-                                {/* Name */}
                                 <div className="flex-1">
                                     {isRevealed ? (
                                         <div>
-                                            <p className="font-bold text-white text-lg">{answer.name}</p>
-                                            <p className="text-sm text-[#39ff14]">{answer.stat}</p>
+                                            <p className="font-medium text-white text-sm">{answer.name}</p>
+                                            <p className="text-xs text-neutral-400">{answer.stat}</p>
                                         </div>
                                     ) : (
-                                        <div className="h-6 w-48 bg-[#251438] rounded animate-pulse"></div>
+                                        <div className="h-4 w-32 bg-neutral-800 rounded"></div>
                                     )}
                                 </div>
-
-                                {/* Revealed indicator */}
-                                {isRevealed && (
-                                    <span className="text-[#39ff14] text-xl">✓</span>
-                                )}
                             </div>
                         );
                     })}
                 </div>
 
-                {/* Game Over / Win Screen */}
+                {/* Game Over */}
                 {gameOver && (
-                    <div className="mt-8 glass-card rounded-2xl p-8 text-center">
-                        {hasWon ? (
-                            <>
-                                <span className="text-6xl mb-4 block">🏆</span>
-                                <h2 className="text-3xl font-bold text-[#39ff14] neon-text-glow mb-2">
-                                    Perfect Score!
-                                </h2>
-                                <p className="text-gray-400 mb-6">You guessed all 10 correctly!</p>
-                            </>
-                        ) : (
-                            <>
-                                <span className="text-6xl mb-4 block">💔</span>
-                                <h2 className="text-3xl font-bold text-red-400 mb-2">
-                                    Game Over
-                                </h2>
-                                <p className="text-gray-400 mb-4">You found {revealed.length}/10</p>
+                    <div className="mt-8 bg-neutral-900 border border-neutral-800 rounded-lg p-6 text-center">
+                        <h2 className={`text-xl font-bold mb-2 ${hasWon ? 'text-green-400' : 'text-red-400'}`}>
+                            {hasWon ? 'Perfect Score!' : 'Game Over'}
+                        </h2>
+                        <p className="text-sm text-neutral-400 mb-4">
+                            You found {revealed.length}/10
+                        </p>
 
-                                {/* Show remaining answers */}
-                                <div className="text-left bg-[#1a1028] rounded-xl p-4 mb-6">
-                                    <p className="text-sm text-gray-500 mb-2">You missed:</p>
-                                    <div className="space-y-1">
-                                        {question.answers
-                                            .filter(a => !revealed.includes(a.rank))
-                                            .map(a => (
-                                                <p key={a.rank} className="text-gray-300">
-                                                    <span className="text-[#39ff14]">#{a.rank}</span> {a.name}
-                                                </p>
-                                            ))
-                                        }
-                                    </div>
+                        {!hasWon && (
+                            <div className="bg-neutral-800 rounded-lg p-4 mb-4 text-left">
+                                <p className="text-xs text-neutral-500 mb-2">You missed:</p>
+                                <div className="space-y-1">
+                                    {question.answers
+                                        .filter(a => !revealed.includes(a.rank))
+                                        .map(a => (
+                                            <p key={a.rank} className="text-sm text-neutral-300">
+                                                #{a.rank} {a.name}
+                                            </p>
+                                        ))
+                                    }
                                 </div>
-                            </>
+                            </div>
                         )}
 
                         <button
                             onClick={startNewGame}
-                            className="px-8 py-4 rounded-xl bg-[#39ff14] text-[#0a0612] font-bold text-lg hover:bg-[#2ed610] transition-all neon-glow"
+                            className="px-6 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
                         >
-                            Play Again 🎮
+                            Play Again
                         </button>
                     </div>
                 )}
             </div>
-        </div>
+        </Container>
     );
 }
 

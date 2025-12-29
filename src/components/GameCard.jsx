@@ -1,41 +1,42 @@
 import { Link } from 'react-router-dom';
 
-function GameCard({ title, description, icon, path, gradient }) {
+function GameCard({ title, description, icon, path }) {
     return (
         <Link
             to={path}
-            className="group relative overflow-hidden rounded-2xl glass-card p-10 transition-all duration-500 hover:scale-105 hover:neon-glow cursor-pointer"
+            className="group block p-6 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-colors"
         >
-            {/* Background Gradient Overlay */}
-            <div
-                className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${gradient}`}
-            />
-
-            {/* Content */}
-            <div className="relative z-10 flex flex-col items-center text-center gap-5">
-                {/* Icon */}
-                <div className="text-6xl mt-2 mb-2 group-hover:scale-110 transition-transform duration-300">
+            <div className="flex items-start gap-4">
+                {/* Icon - subtle */}
+                <div className="w-10 h-10 rounded-lg bg-neutral-800 flex items-center justify-center text-lg shrink-0">
                     {icon}
                 </div>
 
-                {/* Title */}
-                <h3 className="text-2xl font-bold text-white group-hover:text-[#39ff14] transition-colors duration-300">
-                    {title}
-                </h3>
+                <div className="flex-1 min-w-0">
+                    {/* Title */}
+                    <h3 className="text-base font-semibold text-white mb-1 group-hover:text-green-400 transition-colors">
+                        {title}
+                    </h3>
 
-                {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed">
-                    {description}
-                </p>
-
-                {/* Play Button */}
-                <div className="mt-2 px-6 py-2.5 rounded-full border-2 border-[#39ff14] text-[#39ff14] font-semibold text-sm opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                    PLAY NOW →
+                    {/* Description */}
+                    <p className="text-sm text-neutral-400 leading-relaxed">
+                        {description}
+                    </p>
                 </div>
             </div>
 
-            {/* Corner Accent */}
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-[#39ff14]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Play indicator */}
+            <div className="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between">
+                <span className="text-xs text-neutral-500">Click to play</span>
+                <svg
+                    className="w-4 h-4 text-neutral-500 group-hover:text-green-400 transition-colors"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+            </div>
         </Link>
     );
 }

@@ -1,6 +1,13 @@
 import { useState } from 'react';
+import Container from './ui/Container';
 
-// Tag display names
+/**
+ * TagSelector Layout:
+ * - Centered within Container
+ * - Two-column layout for category selection
+ * - Clear vertical flow: Title → Description → Selection Cards → Summary → Action
+ */
+
 const TAG_LABELS = {
     // Teams
     csk: 'Chennai Super Kings',
@@ -19,80 +26,49 @@ const TAG_LABELS = {
     '2020s': '2020s Era',
     recent: 'Recent Player',
     // Experience
-    veteran: 'Veteran (100+ matches)',
-    experienced: 'Experienced (50+ matches)',
-    newcomer: 'Newcomer (<20 matches)',
+    veteran: 'Veteran (100+)',
+    experienced: 'Experienced (50+)',
+    newcomer: 'Newcomer (<20)',
     loyal: 'One-Club Player',
-    journeyman: 'Played 4+ Teams',
+    journeyman: '4+ Teams',
     ipl: 'IPL Player',
     // Nationality
     india: 'Indian',
-    overseas: 'Overseas Player',
+    overseas: 'Overseas',
     australia: 'Australian',
     england: 'English',
     southafrica: 'South African',
     westindies: 'West Indian',
     newzealand: 'New Zealander',
-    // Awards & Achievements
-    orangecap: 'Orange Cap Winner 🧡',
-    purplecap: 'Purple Cap Winner 💜',
-    mvp: 'MVP Award Winner',
-    iccpoty: 'ICC Player of the Year',
-    iplwinner: 'IPL Champion 🏆',
-    captain: 'Team Captain',
+    // Awards
+    orangecap: 'Orange Cap',
+    purplecap: 'Purple Cap',
+    mvp: 'MVP',
+    iccpoty: 'ICC POY',
+    iplwinner: 'IPL Champion',
+    captain: 'Captain',
     // Role
     batter: 'Batter',
     bowler: 'Bowler',
     allrounder: 'All-Rounder',
-    wicketkeeper: 'Wicket-Keeper'
+    wicketkeeper: 'Keeper'
 };
 
-// Organize tags by category with proper headings
 const TAG_GROUPS = [
-    {
-        id: 'teams',
-        label: 'IPL Teams',
-        emoji: '🏏',
-        tags: ['csk', 'mi', 'rcb', 'kkr', 'dc', 'rr', 'srh', 'pbks', 'gt', 'lsg']
-    },
-    {
-        id: 'nationality',
-        label: 'Nationality',
-        emoji: '🌍',
-        tags: ['india', 'overseas', 'australia', 'england', 'southafrica', 'westindies', 'newzealand']
-    },
-    {
-        id: 'awards',
-        label: 'Awards & Achievements',
-        emoji: '🏆',
-        tags: ['orangecap', 'purplecap', 'mvp', 'iplwinner', 'captain']
-    },
-    {
-        id: 'role',
-        label: 'Playing Role',
-        emoji: '🎯',
-        tags: ['batter', 'bowler', 'allrounder', 'wicketkeeper']
-    },
-    {
-        id: 'era',
-        label: 'Era',
-        emoji: '📅',
-        tags: ['og', '2010s', '2020s', 'recent']
-    },
-    {
-        id: 'experience',
-        label: 'Experience',
-        emoji: '⭐',
-        tags: ['veteran', 'experienced', 'newcomer', 'loyal', 'journeyman']
-    }
+    { id: 'teams', label: 'Teams', tags: ['csk', 'mi', 'rcb', 'kkr', 'dc', 'rr', 'srh', 'pbks', 'gt', 'lsg'] },
+    { id: 'nationality', label: 'Nationality', tags: ['india', 'overseas', 'australia', 'england', 'southafrica', 'westindies', 'newzealand'] },
+    { id: 'awards', label: 'Awards', tags: ['orangecap', 'purplecap', 'mvp', 'iplwinner', 'captain'] },
+    { id: 'role', label: 'Role', tags: ['batter', 'bowler', 'allrounder', 'wicketkeeper'] },
+    { id: 'era', label: 'Era', tags: ['og', '2010s', '2020s', 'recent'] },
+    { id: 'experience', label: 'Experience', tags: ['veteran', 'experienced', 'newcomer', 'loyal', 'journeyman'] }
 ];
 
 function TagSelector({ availableTags, onStartGame }) {
     const [selectedRows, setSelectedRows] = useState([]);
     const [selectedCols, setSelectedCols] = useState([]);
     const [error, setError] = useState('');
+    const [expandedGroups, setExpandedGroups] = useState(['teams', 'role']);
 
-    // Combine all available tags
     const allAvailableTags = [
         ...(availableTags.teams || []),
         ...(availableTags.era || []),
@@ -101,6 +77,14 @@ function TagSelector({ availableTags, onStartGame }) {
         ...(availableTags.awards || []),
         ...(availableTags.role || [])
     ];
+
+    const toggleGroup = (groupId) => {
+        setExpandedGroups(prev =>
+            prev.includes(groupId)
+                ? prev.filter(id => id !== groupId)
+                : [...prev, groupId]
+        );
+    };
 
     const toggleTag = (tag, type) => {
         setError('');
@@ -121,28 +105,28 @@ function TagSelector({ availableTags, onStartGame }) {
 
     const handleStart = () => {
         if (selectedRows.length !== 3 || selectedCols.length !== 3) {
-            setError('Please select exactly 3 row categories and 3 column categories');
+            setError('Select exactly 3 categories for each');
             return;
         }
 
         const overlap = selectedRows.filter(r => selectedCols.includes(r));
         if (overlap.length > 0) {
-            setError(`Can't use same category for both rows and columns`);
+            setError("Can't use same category for both");
             return;
         }
 
         onStartGame(selectedRows, selectedCols);
     };
 
-    const TagButton = ({ tag, type, selected, disabled }) => (
+    const TagPill = ({ tag, type, selected, disabled }) => (
         <button
             onClick={() => toggleTag(tag, type)}
             disabled={disabled}
-            className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${selected
-                ? 'bg-[#39ff14] text-[#0a0612] shadow-lg shadow-[#39ff14]/30'
-                : disabled
-                    ? 'bg-[#1a1028]/50 text-gray-600 cursor-not-allowed opacity-50'
-                    : 'bg-[#1a1028] text-gray-300 hover:bg-[#251438] hover:text-white border border-[#3d2259] hover:border-[#39ff14]/50'
+            className={`px-3 py-1.5 rounded text-sm font-medium ${selected
+                    ? 'bg-green-500 text-white'
+                    : disabled
+                        ? 'bg-neutral-800 text-neutral-600 cursor-not-allowed'
+                        : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
                 }`}
         >
             {TAG_LABELS[tag] || tag}
@@ -153,161 +137,129 @@ function TagSelector({ availableTags, onStartGame }) {
         const selected = type === 'row' ? selectedRows : selectedCols;
         const disabled = type === 'row' ? selectedCols : selectedRows;
         const availableInGroup = group.tags.filter(t => allAvailableTags.includes(t));
+        const isExpanded = expandedGroups.includes(group.id);
 
         if (availableInGroup.length === 0) return null;
 
         return (
-            <div key={group.id} className="mb-8">
-                {/* Section Header */}
-                <div className="flex items-center gap-3 mb-4 pb-2 border-b border-[#3d2259]">
-                    <span className="text-2xl">{group.emoji}</span>
-                    <h4 className="text-lg font-bold text-white">{group.label}</h4>
-                    <span className="text-xs text-gray-500 ml-auto">{availableInGroup.length} options</span>
-                </div>
-                {/* Tags */}
-                <div className="flex flex-wrap gap-3">
-                    {availableInGroup.map(tag => (
-                        <TagButton
-                            key={`${type}-${tag}`}
-                            tag={tag}
-                            type={type}
-                            selected={selected.includes(tag)}
-                            disabled={disabled.includes(tag)}
-                        />
-                    ))}
-                </div>
+            <div key={group.id} className="border-b border-neutral-800 last:border-b-0">
+                <button
+                    onClick={() => toggleGroup(group.id)}
+                    className="w-full flex items-center justify-between py-3 text-left"
+                >
+                    <span className="text-sm font-medium text-neutral-300">{group.label}</span>
+                    <svg
+                        className={`w-4 h-4 text-neutral-500 ${isExpanded ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                {isExpanded && (
+                    <div className="flex flex-wrap gap-2 pb-4">
+                        {availableInGroup.map(tag => (
+                            <TagPill
+                                key={`${type}-${tag}`}
+                                tag={tag}
+                                type={type}
+                                selected={selected.includes(tag)}
+                                disabled={disabled.includes(tag)}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
         );
     };
 
     return (
-        <div className="min-h-screen pt-28 pb-16 px-6 lg:px-12">
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="text-center mb-12">
-                    <h1 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                        Box Cricket
-                    </h1>
-                    <p className="text-xl text-gray-400">
-                        Select 3 categories for rows and 3 for columns
+        <Container>
+            {/* Centered Panel */}
+            <div className="max-w-[900px] mx-auto py-8">
+
+                {/* Title */}
+                <div className="text-center mb-8">
+                    <h1 className="text-2xl font-bold text-white mb-2">Box Cricket</h1>
+                    <p className="text-neutral-400">
+                        Select 3 categories for rows and 3 for columns to create your puzzle grid
                     </p>
                 </div>
 
-                {/* Error Message */}
+                {/* Error */}
                 {error && (
-                    <div className="max-w-2xl mx-auto mb-8 p-4 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 text-center">
+                    <div className="max-w-md mx-auto mb-6 p-3 rounded-lg bg-red-500/10 text-red-400 text-sm text-center">
                         {error}
                     </div>
                 )}
 
-                {/* Selection Panels */}
-                <div className="grid lg:grid-cols-2 gap-8 mb-12">
-                    {/* Row Selection */}
-                    <div className="glass-card rounded-3xl p-6 lg:p-8">
-                        <div className="flex items-center justify-between mb-8 pb-4 border-b-2 border-[#39ff14]/30">
-                            <h3 className="text-2xl font-bold flex items-center gap-3">
-                                <span className="w-12 h-12 rounded-xl bg-[#39ff14] flex items-center justify-center text-[#0a0612] text-xl font-black">↓</span>
-                                <span>Row Categories</span>
-                            </h3>
-                            <span className="text-2xl font-mono">
-                                <span className="text-[#39ff14] font-bold">{selectedRows.length}</span>
-                                <span className="text-gray-500">/3</span>
-                            </span>
+                {/* Two Column Selection Cards */}
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                    {/* Row Categories Card */}
+                    <div className="bg-neutral-900 border border-neutral-800 rounded-lg overflow-hidden">
+                        <div className="px-4 py-3 border-b border-neutral-800 flex items-center justify-between">
+                            <h3 className="font-medium text-white">Row Categories</h3>
+                            <span className="text-xs text-neutral-500">{selectedRows.length}/3</span>
                         </div>
-                        <div className="max-h-[500px] overflow-y-auto pr-2">
+                        <div className="p-4">
                             {TAG_GROUPS.map(group => renderTagGroup(group, 'row'))}
                         </div>
                     </div>
 
-                    {/* Column Selection */}
-                    <div className="glass-card rounded-3xl p-6 lg:p-8">
-                        <div className="flex items-center justify-between mb-8 pb-4 border-b-2 border-[#39ff14]/30">
-                            <h3 className="text-2xl font-bold flex items-center gap-3">
-                                <span className="w-12 h-12 rounded-xl bg-[#39ff14] flex items-center justify-center text-[#0a0612] text-xl font-black">→</span>
-                                <span>Column Categories</span>
-                            </h3>
-                            <span className="text-2xl font-mono">
-                                <span className="text-[#39ff14] font-bold">{selectedCols.length}</span>
-                                <span className="text-gray-500">/3</span>
-                            </span>
+                    {/* Column Categories Card */}
+                    <div className="bg-neutral-900 border border-neutral-800 rounded-lg overflow-hidden">
+                        <div className="px-4 py-3 border-b border-neutral-800 flex items-center justify-between">
+                            <h3 className="font-medium text-white">Column Categories</h3>
+                            <span className="text-xs text-neutral-500">{selectedCols.length}/3</span>
                         </div>
-                        <div className="max-h-[500px] overflow-y-auto pr-2">
+                        <div className="p-4">
                             {TAG_GROUPS.map(group => renderTagGroup(group, 'col'))}
                         </div>
                     </div>
                 </div>
 
-                {/* Preview + Start Button */}
-                <div className="max-w-4xl mx-auto">
-                    {/* Grid Preview */}
-                    {(selectedRows.length > 0 || selectedCols.length > 0) && (
-                        <div className="glass-card rounded-3xl p-8 mb-8">
-                            <h3 className="text-xl font-bold mb-6 text-center">Grid Preview</h3>
-                            <div className="overflow-x-auto">
-                                <table className="w-full">
-                                    <thead>
-                                        <tr>
-                                            <th className="p-4 w-48"></th>
-                                            {selectedCols.map(col => (
-                                                <th key={col} className="p-4 text-[#39ff14] font-semibold text-center text-sm">
-                                                    {TAG_LABELS[col] || col}
-                                                </th>
-                                            ))}
-                                            {Array(3 - selectedCols.length).fill(0).map((_, i) => (
-                                                <th key={`empty-col-${i}`} className="p-4 text-gray-600 text-center">?</th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {selectedRows.map(row => (
-                                            <tr key={row}>
-                                                <td className="p-4 text-[#39ff14] font-semibold text-sm">{TAG_LABELS[row] || row}</td>
-                                                {selectedCols.map(col => (
-                                                    <td key={`${row}-${col}`} className="p-4 text-center">
-                                                        <div className="w-20 h-20 mx-auto rounded-xl bg-[#1a1028] border-2 border-[#3d2259] flex items-center justify-center text-3xl text-gray-500">
-                                                            ?
-                                                        </div>
-                                                    </td>
-                                                ))}
-                                                {Array(3 - selectedCols.length).fill(0).map((_, i) => (
-                                                    <td key={`empty-${i}`} className="p-4 text-center">
-                                                        <div className="w-20 h-20 mx-auto rounded-xl bg-[#0a0612]/50 border-2 border-dashed border-gray-700"></div>
-                                                    </td>
-                                                ))}
-                                            </tr>
-                                        ))}
-                                        {Array(3 - selectedRows.length).fill(0).map((_, i) => (
-                                            <tr key={`empty-row-${i}`}>
-                                                <td className="p-4 text-gray-600">?</td>
-                                                {Array(3).fill(0).map((_, j) => (
-                                                    <td key={`empty-${i}-${j}`} className="p-4 text-center">
-                                                        <div className="w-20 h-20 mx-auto rounded-xl bg-[#0a0612]/50 border-2 border-dashed border-gray-700"></div>
-                                                    </td>
-                                                ))}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                {/* Summary */}
+                {(selectedRows.length > 0 || selectedCols.length > 0) && (
+                    <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 mb-6">
+                        <div className="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span className="text-neutral-500">Rows: </span>
+                                <span className="text-white">
+                                    {selectedRows.length > 0
+                                        ? selectedRows.map(t => TAG_LABELS[t]).join(', ')
+                                        : 'None selected'
+                                    }
+                                </span>
+                            </div>
+                            <div>
+                                <span className="text-neutral-500">Columns: </span>
+                                <span className="text-white">
+                                    {selectedCols.length > 0
+                                        ? selectedCols.map(t => TAG_LABELS[t]).join(', ')
+                                        : 'None selected'
+                                    }
+                                </span>
                             </div>
                         </div>
-                    )}
-
-                    {/* Start Button */}
-                    <div className="text-center">
-                        <button
-                            onClick={handleStart}
-                            disabled={selectedRows.length !== 3 || selectedCols.length !== 3}
-                            className={`px-16 py-5 rounded-2xl font-bold text-xl transition-all duration-300 ${selectedRows.length === 3 && selectedCols.length === 3
-                                ? 'bg-[#39ff14] text-[#0a0612] hover:bg-[#2ed610] neon-glow hover:scale-105'
-                                : 'bg-[#1a1028] text-gray-500 cursor-not-allowed border border-[#3d2259]'
-                                }`}
-                        >
-                            Start Game 🏏
-                        </button>
                     </div>
+                )}
+
+                {/* Action Button */}
+                <div className="text-center">
+                    <button
+                        onClick={handleStart}
+                        disabled={selectedRows.length !== 3 || selectedCols.length !== 3}
+                        className={`px-8 py-3 rounded-lg font-medium ${selectedRows.length === 3 && selectedCols.length === 3
+                                ? 'bg-green-500 text-white hover:bg-green-600'
+                                : 'bg-neutral-800 text-neutral-500 cursor-not-allowed'
+                            }`}
+                    >
+                        Start Game
+                    </button>
                 </div>
             </div>
-        </div>
+        </Container>
     );
 }
 

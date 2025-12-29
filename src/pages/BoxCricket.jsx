@@ -5,6 +5,8 @@ import TagSelector, { TAG_LABELS } from '../components/TagSelector';
 import RoomLobby from '../components/RoomLobby';
 import WaitingRoom from '../components/WaitingRoom';
 import { celebrate } from '../utils/confetti';
+import Container from '../components/ui/Container';
+import Button from '../components/ui/Button';
 import {
     createRoom,
     joinRoom,
@@ -284,38 +286,38 @@ function BoxCricket() {
 
     // Playing mode
     return (
-        <div className="min-h-screen pt-32 pb-16 px-6 flex flex-col items-center">
-            <div className="w-full max-w-4xl mx-auto">
+        <div className="py-8 md:py-12">
+            <Container>
                 {/* Header */}
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                <div className="text-center mb-6">
+                    <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
                         Box Cricket
                     </h1>
 
                     {/* Multiplayer info */}
                     {!isSolo && (
-                        <div className="flex items-center justify-center gap-4 mb-4">
-                            <span className="text-gray-400">Room: </span>
-                            <span className="text-[#39ff14] font-mono font-bold">{roomCode}</span>
+                        <div className="flex items-center justify-center gap-2 mb-4 text-sm">
+                            <span className="text-neutral-500">Room:</span>
+                            <span className="font-mono font-medium text-white">{roomCode}</span>
                         </div>
                     )}
 
-                    {/* Turn indicator */}
-                    <div className="flex items-center justify-center gap-4 mb-2">
+                    {/* Status */}
+                    <div className="flex items-center justify-center gap-4 text-sm">
                         {!isSolo && (
-                            <div className={`px-4 py-2 rounded-xl ${isMyTurn
-                                ? 'bg-[#39ff14]/20 text-[#39ff14] border border-[#39ff14]/50'
-                                : 'bg-gray-700/50 text-gray-400 border border-gray-600'
+                            <span className={`px-3 py-1 rounded-md ${isMyTurn
+                                    ? 'bg-green-500/10 text-green-400'
+                                    : 'bg-neutral-800 text-neutral-400'
                                 }`}>
-                                {isMyTurn ? "🎯 Your Turn" : "⏳ Opponent's Turn"}
-                            </div>
+                                {isMyTurn ? "Your Turn" : "Opponent's Turn"}
+                            </span>
                         )}
-                        <span className="text-sm text-gray-500">{filledCount}/9 completed</span>
+                        <span className="text-neutral-500">{filledCount}/9 filled</span>
                     </div>
 
                     <button
                         onClick={handleLeaveRoom}
-                        className="text-sm text-gray-500 hover:text-red-400"
+                        className="text-sm text-neutral-500 hover:text-red-400 mt-4"
                     >
                         ← Leave Game
                     </button>
@@ -323,26 +325,26 @@ function BoxCricket() {
 
                 {/* Message Toast */}
                 {message && (
-                    <div className={`fixed top-24 left-1/2 -translate-x-1/2 px-6 py-3 rounded-xl font-semibold z-50 ${message.type === 'success'
-                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                        : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                    <div className={`fixed top-20 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm z-50 ${message.type === 'success'
+                            ? 'bg-green-500/10 text-green-400 border border-green-500/20'
+                            : 'bg-red-500/10 text-red-400 border border-red-500/20'
                         }`}>
                         {message.text}
                     </div>
                 )}
 
                 {/* Grid Container */}
-                <div className="overflow-x-auto">
-                    <div className="min-w-[500px]">
+                <div className="overflow-x-auto -mx-4 px-4">
+                    <div className="min-w-[500px] max-w-2xl mx-auto">
                         {/* Top Headers */}
-                        <div className="grid gap-2 mb-2" style={{ gridTemplateColumns: '140px repeat(3, 1fr)' }}>
+                        <div className="grid gap-2 mb-2" style={{ gridTemplateColumns: '120px repeat(3, 1fr)' }}>
                             <div></div>
                             {colTags.map((tag) => (
                                 <div
                                     key={tag}
-                                    className="flex items-center justify-center p-3 rounded-xl bg-[#251438] text-center min-h-[60px]"
+                                    className="flex items-center justify-center p-3 rounded-lg bg-neutral-800 text-center"
                                 >
-                                    <span className="font-semibold text-[#39ff14] text-xs">
+                                    <span className="font-medium text-neutral-300 text-xs">
                                         {TAG_LABELS[tag] || tag}
                                     </span>
                                 </div>
@@ -351,9 +353,9 @@ function BoxCricket() {
 
                         {/* Grid Rows */}
                         {rowTags.map((rowTag, rowIndex) => (
-                            <div key={rowTag} className="grid gap-2 mb-2" style={{ gridTemplateColumns: '140px repeat(3, 1fr)' }}>
-                                <div className="flex items-center justify-center p-3 rounded-xl bg-[#251438]">
-                                    <span className="font-semibold text-[#39ff14] text-xs text-center">
+                            <div key={rowTag} className="grid gap-2 mb-2" style={{ gridTemplateColumns: '120px repeat(3, 1fr)' }}>
+                                <div className="flex items-center justify-center p-3 rounded-lg bg-neutral-800">
+                                    <span className="font-medium text-neutral-300 text-xs text-center">
                                         {TAG_LABELS[rowTag] || rowTag}
                                     </span>
                                 </div>
@@ -367,24 +369,21 @@ function BoxCricket() {
                                             key={`${rowIndex}-${colIndex}`}
                                             onClick={() => handleCellClick(rowIndex, colIndex)}
                                             disabled={!canClick}
-                                            className={`aspect-square rounded-xl border-2 transition-all duration-300 flex items-center justify-center overflow-hidden ${cell
-                                                ? 'border-[#39ff14]/50 bg-[#1a1028]'
-                                                : canClick
-                                                    ? 'border-[#3d2259] bg-[#1a1028] hover:border-[#39ff14] hover:bg-[#251438] cursor-pointer'
-                                                    : 'border-[#3d2259] bg-[#1a1028] opacity-50 cursor-not-allowed'
+                                            className={`aspect-square rounded-lg border transition-colors flex items-center justify-center ${cell
+                                                    ? 'border-green-500/30 bg-green-500/5'
+                                                    : canClick
+                                                        ? 'border-neutral-700 bg-neutral-900 hover:border-green-500 hover:bg-neutral-800 cursor-pointer'
+                                                        : 'border-neutral-800 bg-neutral-900 opacity-50 cursor-not-allowed'
                                                 }`}
                                         >
                                             {cell ? (
-                                                <div className="w-full h-full flex flex-col items-center justify-center p-2">
-                                                    <div className="w-14 h-14 rounded-full bg-[#251438] flex items-center justify-center mb-1 text-2xl">
-                                                        🏏
-                                                    </div>
-                                                    <span className="text-xs text-white font-medium text-center truncate w-full px-1">
+                                                <div className="text-center p-2">
+                                                    <span className="text-xs text-white font-medium block truncate">
                                                         {cell.name}
                                                     </span>
                                                 </div>
                                             ) : (
-                                                <span className="text-3xl text-gray-600">?</span>
+                                                <span className="text-2xl text-neutral-700">?</span>
                                             )}
                                         </button>
                                     );
@@ -396,21 +395,17 @@ function BoxCricket() {
 
                 {/* Complete Message */}
                 {isComplete && (
-                    <div className="mt-8 text-center p-6 glass-card rounded-xl">
-                        <span className="text-4xl mb-4 block">🎉</span>
-                        <h2 className="text-2xl font-bold text-[#39ff14] neon-text-glow">
+                    <div className="mt-8 bg-neutral-900 rounded-xl border border-neutral-800 p-6 text-center max-w-md mx-auto">
+                        <h2 className="text-xl font-bold text-green-400 mb-2">
                             Game Complete!
                         </h2>
-                        <p className="text-gray-400 mt-2">All cells have been filled.</p>
-                        <button
-                            onClick={handleLeaveRoom}
-                            className="mt-4 px-6 py-2 rounded-lg bg-[#39ff14] text-[#0a0612] font-semibold hover:bg-[#2ed610]"
-                        >
+                        <p className="text-sm text-neutral-400 mb-4">All cells have been filled.</p>
+                        <Button onClick={handleLeaveRoom}>
                             Play Again
-                        </button>
+                        </Button>
                     </div>
                 )}
-            </div>
+            </Container>
 
             {/* Search Modal */}
             <SearchModal

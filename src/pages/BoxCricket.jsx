@@ -5,7 +5,8 @@ import TagSelector, { TAG_LABELS } from '../components/TagSelector';
 import RoomLobby from '../components/RoomLobby';
 import WaitingRoom from '../components/WaitingRoom';
 import { celebrate } from '../utils/confetti';
-import Container from '../components/ui/Container';
+import PageContainer from '../components/ui/PageContainer';
+import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import {
     createRoom,
@@ -249,10 +250,12 @@ function BoxCricket() {
             <>
                 {/* Show who's selecting */}
                 {!isSolo && (
-                    <div className="fixed top-20 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-xl glass-card">
-                        <span className="text-gray-400">Room: </span>
-                        <span className="text-[#39ff14] font-mono font-bold">{roomCode}</span>
-                        {!isHost && <span className="text-gray-400 ml-4">Waiting for host to select categories...</span>}
+                    <div className="fixed top-20 left-1/2 -translate-x-1/2 z-40">
+                        <Card padding="sm">
+                            <span className="text-neutral-400">Room: </span>
+                            <span className="text-green-400 font-mono font-bold">{roomCode}</span>
+                            {!isHost && <span className="text-neutral-400 ml-4">Waiting for host to select categories...</span>}
+                        </Card>
                     </div>
                 )}
 
@@ -260,20 +263,20 @@ function BoxCricket() {
                 {(isSolo || isHost) ? (
                     <TagSelector availableTags={availableTags} onStartGame={handleStartGame} />
                 ) : (
-                    <div className="min-h-screen pt-32 pb-16 px-6 flex flex-col items-center justify-center">
-                        <div className="text-center glass-card rounded-3xl p-12">
+                    <PageContainer maxWidth="500px">
+                        <Card className="text-center">
                             <div className="relative mb-8">
-                                <div className="w-20 h-20 border-4 border-[#3d2259] rounded-full mx-auto"></div>
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 border-4 border-[#39ff14] border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-20 h-20 border-4 border-neutral-700 rounded-full mx-auto"></div>
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                             </div>
-                            <h2 className="text-2xl font-bold mb-4">Waiting for Host</h2>
-                            <p className="text-gray-400">The host is selecting the categories...</p>
-                        </div>
-                    </div>
+                            <h2 className="text-2xl font-bold mb-4 text-white">Waiting for Host</h2>
+                            <p className="text-neutral-400">The host is selecting the categories...</p>
+                        </Card>
+                    </PageContainer>
                 )}
 
                 {message && (
-                    <div className={`fixed top-24 left-1/2 -translate-x-1/2 px-6 py-3 rounded-xl font-semibold z-50 ${message.type === 'success'
+                    <div className={`fixed top-24 left-1/2 -translate-x-1/2 px-6 py-3 rounded-lg font-semibold z-50 ${message.type === 'success'
                         ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                         : 'bg-red-500/20 text-red-400 border border-red-500/30'
                         }`}>
@@ -286,56 +289,56 @@ function BoxCricket() {
 
     // Playing mode
     return (
-        <div className="py-8 md:py-12">
-            <Container>
-                {/* Header */}
-                <div className="text-center mb-6">
-                    <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                        Box Cricket
-                    </h1>
+        <PageContainer>
+            {/* Header */}
+            <div className="text-center mb-6">
+                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                    Box Cricket
+                </h1>
 
-                    {/* Multiplayer info */}
-                    {!isSolo && (
-                        <div className="flex items-center justify-center gap-2 mb-4 text-sm">
-                            <span className="text-neutral-500">Room:</span>
-                            <span className="font-mono font-medium text-white">{roomCode}</span>
-                        </div>
-                    )}
-
-                    {/* Status */}
-                    <div className="flex items-center justify-center gap-4 text-sm">
-                        {!isSolo && (
-                            <span className={`px-3 py-1 rounded-md ${isMyTurn
-                                    ? 'bg-green-500/10 text-green-400'
-                                    : 'bg-neutral-800 text-neutral-400'
-                                }`}>
-                                {isMyTurn ? "Your Turn" : "Opponent's Turn"}
-                            </span>
-                        )}
-                        <span className="text-neutral-500">{filledCount}/9 filled</span>
-                    </div>
-
-                    <button
-                        onClick={handleLeaveRoom}
-                        className="text-sm text-neutral-500 hover:text-red-400 mt-4"
-                    >
-                        ← Leave Game
-                    </button>
-                </div>
-
-                {/* Message Toast */}
-                {message && (
-                    <div className={`fixed top-20 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm z-50 ${message.type === 'success'
-                            ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                            : 'bg-red-500/10 text-red-400 border border-red-500/20'
-                        }`}>
-                        {message.text}
+                {/* Multiplayer info */}
+                {!isSolo && (
+                    <div className="flex items-center justify-center gap-2 mb-4 text-sm">
+                        <span className="text-neutral-500">Room:</span>
+                        <span className="font-mono font-medium text-white">{roomCode}</span>
                     </div>
                 )}
 
-                {/* Grid Container */}
+                {/* Status */}
+                <div className="flex items-center justify-center gap-4 text-sm">
+                    {!isSolo && (
+                        <span className={`px-3 py-1 rounded-md ${isMyTurn
+                            ? 'bg-green-500/10 text-green-400'
+                            : 'bg-neutral-800 text-neutral-400'
+                            }`}>
+                            {isMyTurn ? "Your Turn" : "Opponent's Turn"}
+                        </span>
+                    )}
+                    <span className="text-neutral-500">{filledCount}/9 filled</span>
+                </div>
+
+                <button
+                    onClick={handleLeaveRoom}
+                    className="text-sm text-neutral-500 hover:text-red-400 mt-4"
+                >
+                    ← Leave Game
+                </button>
+            </div>
+
+            {/* Message Toast */}
+            {message && (
+                <div className={`fixed top-20 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm z-50 ${message.type === 'success'
+                    ? 'bg-green-500/10 text-green-400 border border-green-500/20'
+                    : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                    }`}>
+                    {message.text}
+                </div>
+            )}
+
+            {/* Grid Container */}
+            <Card padding="lg" className="max-w-2xl mx-auto">
                 <div className="overflow-x-auto -mx-4 px-4">
-                    <div className="min-w-[500px] max-w-2xl mx-auto">
+                    <div className="min-w-[500px]">
                         {/* Top Headers */}
                         <div className="grid gap-2 mb-2" style={{ gridTemplateColumns: '120px repeat(3, 1fr)' }}>
                             <div></div>
@@ -370,10 +373,10 @@ function BoxCricket() {
                                             onClick={() => handleCellClick(rowIndex, colIndex)}
                                             disabled={!canClick}
                                             className={`aspect-square rounded-lg border transition-colors flex items-center justify-center ${cell
-                                                    ? 'border-green-500/30 bg-green-500/5'
-                                                    : canClick
-                                                        ? 'border-neutral-700 bg-neutral-900 hover:border-green-500 hover:bg-neutral-800 cursor-pointer'
-                                                        : 'border-neutral-800 bg-neutral-900 opacity-50 cursor-not-allowed'
+                                                ? 'border-green-500/30 bg-green-500/5'
+                                                : canClick
+                                                    ? 'border-neutral-700 bg-neutral-800 hover:border-green-500 cursor-pointer'
+                                                    : 'border-neutral-800 bg-neutral-900 opacity-50 cursor-not-allowed'
                                                 }`}
                                         >
                                             {cell ? (
@@ -392,20 +395,20 @@ function BoxCricket() {
                         ))}
                     </div>
                 </div>
+            </Card>
 
-                {/* Complete Message */}
-                {isComplete && (
-                    <div className="mt-8 bg-neutral-900 rounded-xl border border-neutral-800 p-6 text-center max-w-md mx-auto">
-                        <h2 className="text-xl font-bold text-green-400 mb-2">
-                            Game Complete!
-                        </h2>
-                        <p className="text-sm text-neutral-400 mb-4">All cells have been filled.</p>
-                        <Button onClick={handleLeaveRoom}>
-                            Play Again
-                        </Button>
-                    </div>
-                )}
-            </Container>
+            {/* Complete Message */}
+            {isComplete && (
+                <Card className="mt-8 text-center max-w-md mx-auto">
+                    <h2 className="text-xl font-bold text-green-400 mb-2">
+                        Game Complete!
+                    </h2>
+                    <p className="text-sm text-neutral-400 mb-4">All cells have been filled.</p>
+                    <Button onClick={handleLeaveRoom}>
+                        Play Again
+                    </Button>
+                </Card>
+            )}
 
             {/* Search Modal */}
             <SearchModal
@@ -416,7 +419,7 @@ function BoxCricket() {
                 rowCategory={selectedCell ? TAG_LABELS[rowTags[selectedCell.row]] : ''}
                 colCategory={selectedCell ? TAG_LABELS[colTags[selectedCell.col]] : ''}
             />
-        </div>
+        </PageContainer>
     );
 }
 

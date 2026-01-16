@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import { Plus, ArrowRight, User, Hash } from 'lucide-react';
 import PageContainer from './ui/PageContainer';
 import Card from './ui/Card';
 
 /**
- * RoomLobby Layout:
- * - Centered card with stacked actions
- * - Clear vertical flow: Title → Description → Actions
- * - No left-aligned floating buttons
+ * RoomLobby
+ * 
+ * Mode selection UI for Box Cricket.
+ * Features:
+ * - Centered Card layout
+ * - 3 Stacked Options: Create, Join, Solo
+ * - Consistent with global design system
  */
 function RoomLobby({ onCreateRoom, onJoinRoom, isLoading, error }) {
     const [mode, setMode] = useState(null);
@@ -28,113 +32,143 @@ function RoomLobby({ onCreateRoom, onJoinRoom, isLoading, error }) {
     };
 
     return (
-        <PageContainer maxWidth="480px" className="py-16">
-            {/* Title */}
-            <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold text-white mb-2">Box Cricket</h1>
-                <p className="text-neutral-400">Choose how you want to play</p>
-            </div>
-
-            {/* Error */}
-            {(error || inputError) && (
-                <div className="mb-6 p-3 rounded-lg bg-red-500/10 text-red-400 text-sm text-center">
-                    {error || inputError}
+        <PageContainer className="flex items-center justify-center min-h-[calc(100vh-72px)]">
+            <div className="w-full max-w-md">
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-white mb-2">Box Cricket</h1>
+                    <p className="text-gray-400">Choose a game mode to get started</p>
                 </div>
-            )}
 
-            {/* Action Card */}
-            <Card>
-                {/* Mode Selection - Stacked */}
-                {!mode && (
-                    <div className="space-y-3">
-                        <button
-                            onClick={() => setMode('create')}
-                            disabled={isLoading}
-                            className="w-full p-4 text-left bg-neutral-800 border border-neutral-700 rounded-lg hover:border-neutral-600"
-                        >
-                            <p className="font-semibold text-white">Create Room</p>
-                            <p className="text-sm text-neutral-500">Start a new multiplayer game</p>
-                        </button>
+                {/* Error Display */}
+                {(error || inputError) && (
+                    <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+                        {error || inputError}
+                    </div>
+                )}
 
-                        <button
-                            onClick={() => setMode('join')}
-                            disabled={isLoading}
-                            className="w-full p-4 text-left bg-neutral-800 border border-neutral-700 rounded-lg hover:border-neutral-600"
-                        >
-                            <p className="font-semibold text-white">Join Room</p>
-                            <p className="text-sm text-neutral-500">Enter a room code</p>
-                        </button>
+                <Card className="overflow-hidden">
+                    {/* Main Mode Selection */}
+                    {!mode && (
+                        <div className="divide-y divide-border">
+                            {/* Create Room */}
+                            <button
+                                onClick={() => setMode('create')}
+                                disabled={isLoading}
+                                className="w-full p-4 flex items-center gap-4 hover:bg-surface-hover hover:bg-white/5 transition-colors text-left group"
+                            >
+                                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                    <Plus className="w-5 h-5 text-primary" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-white">Create Room</h3>
+                                    <p className="text-xs text-gray-500">Host a new multiplayer game</p>
+                                </div>
+                            </button>
 
-                        <div className="pt-4 border-t border-neutral-800">
+                            {/* Join Room */}
+                            <button
+                                onClick={() => setMode('join')}
+                                disabled={isLoading}
+                                className="w-full p-4 flex items-center gap-4 hover:bg-surface-hover hover:bg-white/5 transition-colors text-left group"
+                            >
+                                <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                                    <ArrowRight className="w-5 h-5 text-blue-400" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-white">Join Room</h3>
+                                    <p className="text-xs text-gray-500">Enter a code to join friends</p>
+                                </div>
+                            </button>
+
+                            {/* Solo Play */}
                             <button
                                 onClick={() => onCreateRoom(true)}
-                                className="w-full p-4 text-left bg-neutral-800 border border-neutral-700 rounded-lg hover:border-neutral-600"
-                            >
-                                <p className="font-semibold text-white">Solo Play</p>
-                                <p className="text-sm text-neutral-500">Practice by yourself</p>
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Create Room Flow */}
-                {mode === 'create' && (
-                    <div>
-                        <button
-                            onClick={() => setMode(null)}
-                            className="text-sm text-neutral-500 hover:text-white mb-4"
-                        >
-                            ← Back
-                        </button>
-
-                        <div className="text-center">
-                            <p className="text-neutral-400 mb-6">
-                                A room code will be generated for you to share.
-                            </p>
-                            <button
-                                onClick={handleCreate}
                                 disabled={isLoading}
-                                className="w-full py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 disabled:opacity-50"
+                                className="w-full p-4 flex items-center gap-4 hover:bg-surface-hover hover:bg-white/5 transition-colors text-left group"
                             >
-                                {isLoading ? 'Creating...' : 'Create Room'}
+                                <div className="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center group-hover:bg-yellow-500/20 transition-colors">
+                                    <User className="w-5 h-5 text-yellow-400" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-white">Solo Play</h3>
+                                    <p className="text-xs text-gray-500">Practice mode, no opponent</p>
+                                </div>
                             </button>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                {/* Join Room Flow */}
-                {mode === 'join' && (
-                    <div>
-                        <button
-                            onClick={() => setMode(null)}
-                            className="text-sm text-neutral-500 hover:text-white mb-4"
-                        >
-                            ← Back
-                        </button>
-
-                        <div className="text-center">
-                            <p className="text-neutral-400 mb-4">
-                                Enter the 6-character room code.
-                            </p>
-                            <input
-                                type="text"
-                                value={roomCode}
-                                onChange={(e) => setRoomCode(e.target.value.toUpperCase().slice(0, 6))}
-                                placeholder="XXXXXX"
-                                maxLength={6}
-                                className="w-full text-center text-2xl font-mono tracking-widest px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:border-green-500 mb-4"
-                            />
+                    {/* Create Room View */}
+                    {mode === 'create' && (
+                        <div className="p-6">
                             <button
-                                onClick={handleJoin}
-                                disabled={isLoading || roomCode.length !== 6}
-                                className="w-full py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 disabled:opacity-50"
+                                onClick={() => setMode(null)}
+                                className="text-xs font-semibold text-gray-500 hover:text-white mb-6 flex items-center gap-1 transition-colors"
                             >
-                                {isLoading ? 'Joining...' : 'Join Room'}
+                                ← Back to modes
                             </button>
+
+                            <div className="text-center space-y-6">
+                                <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                                    <Hash className="w-8 h-8 text-primary" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-white mb-2">Create New Room</h3>
+                                    <p className="text-sm text-gray-400">
+                                        You'll get a unique code to share with your friend.
+                                    </p>
+                                </div>
+
+                                <button
+                                    onClick={handleCreate}
+                                    disabled={isLoading}
+                                    className="w-full py-3 bg-primary text-black font-bold rounded-md hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isLoading ? 'Creating Room...' : 'Generate Code'}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </Card>
+                    )}
+
+                    {/* Join Room View */}
+                    {mode === 'join' && (
+                        <div className="p-6">
+                            <button
+                                onClick={() => setMode(null)}
+                                className="text-xs font-semibold text-gray-500 hover:text-white mb-6 flex items-center gap-1 transition-colors"
+                            >
+                                ← Back to modes
+                            </button>
+
+                            <div className="text-center space-y-6">
+                                <div>
+                                    <h3 className="text-xl font-bold text-white mb-2">Join Room</h3>
+                                    <p className="text-sm text-gray-400">
+                                        Enter the 6-character code shared by your host.
+                                    </p>
+                                </div>
+
+                                <input
+                                    type="text"
+                                    value={roomCode}
+                                    onChange={(e) => setRoomCode(e.target.value.toUpperCase().slice(0, 6))}
+                                    placeholder="AB12CD"
+                                    className="w-full bg-background border border-border rounded-md px-4 py-3 text-center text-2xl font-mono font-bold text-white tracking-widest focus:outline-none focus:border-primary transition-colors"
+                                    autoFocus
+                                />
+
+                                <button
+                                    onClick={handleJoin}
+                                    disabled={isLoading || roomCode.length < 6}
+                                    className="w-full py-3 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isLoading ? 'Joining...' : 'Enter Room'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </Card>
+            </div>
         </PageContainer>
     );
 }

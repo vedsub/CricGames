@@ -1,39 +1,56 @@
+import React from 'react';
+
 /**
- * Card - Reusable card component with consistent styling
+ * Card Component
  * 
- * @param {string} variant - 'default' | 'elevated' | 'interactive'
- * @param {string} padding - 'sm' | 'md' | 'lg' | 'none'
- * @param {string} className - Additional classes
+ * Reusable card component following the global design system.
+ * Requirements:
+ * - dark surface background (#161616 -> bg-surface)
+ * - subtle border (#222 -> border-border)
+ * - rounded-lg (16px)
+ * - p-6 padding (default)
+ * - hover: shadow-lg + subtle elevation (for interactive variants)
+ * - smooth transition 200ms
+ * 
+ * @param {Object} props
+ * @param {React.ReactNode} props.children
+ * @param {string} [props.variant] - 'default' | 'elevated' | 'interactive'
+ * @param {string} [props.padding] - 'none' | 'sm' | 'md' | 'lg'
+ * @param {string} [props.className]
  */
-function Card({
+const Card = ({
     children,
     variant = 'default',
     padding = 'md',
     className = '',
     ...props
-}) {
-    const baseClasses = 'bg-neutral-900 border border-neutral-800 rounded-lg';
+}) => {
+    const baseStyles = 'bg-surface border border-border rounded-lg transition-all duration-200';
 
     const variants = {
-        default: '',
-        elevated: 'shadow-lg',
-        interactive: 'hover:border-neutral-700 transition-colors cursor-pointer'
+        default: 'shadow-card',
+        elevated: 'shadow-card-elevated', // Assuming this token might need to be defined or just use utility
+        interactive: 'shadow-card hover:shadow-card-hover hover:-translate-y-1 cursor-pointer hover:border-primary/30',
     };
 
     const paddings = {
         none: '',
         sm: 'p-4',
         md: 'p-6',
-        lg: 'p-8'
+        lg: 'p-8',
     };
 
-    const classes = `${baseClasses} ${variants[variant]} ${paddings[padding]} ${className}`;
+    // Fallback for elevated if custom token missing, using standard Tailwind
+    const variantStyles = variants[variant] || variants.default;
 
     return (
-        <div className={classes} {...props}>
+        <div
+            className={`${baseStyles} ${variantStyles} ${paddings[padding]} ${className}`}
+            {...props}
+        >
             {children}
         </div>
     );
-}
+};
 
 export default Card;

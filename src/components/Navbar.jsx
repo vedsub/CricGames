@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 /**
- * Navbar - Fixed 64px height
- * - Content aligned to same 1100px container as page content
- * - Subtle bottom border for separation
- * - Active link clearly indicated
+ * Navbar - Responsive Navigation
+ * Requirements:
+ * - dark background (#0b0b0b -> bg-background)
+ * - bottom border (#222 -> border-border)
+ * - container matches PageContainer (max-w-6xl mx-auto px-6)
+ * - logo on left, nav links right
+ * - highlight active link (text-primary)
+ * - collapsible hamburger on mobile
  */
 function Navbar() {
     const location = useLocation();
@@ -17,28 +22,34 @@ function Navbar() {
         { name: 'About', path: '/about' }
     ];
 
-    const isActive = (path) => location.pathname === path;
+    const isActive = (path) => {
+        if (path === '/') return location.pathname === '/';
+        return location.pathname.startsWith(path);
+    };
 
     return (
         <>
-            {/* Navbar - 64px height, bottom border */}
-            <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-neutral-900 border-b border-neutral-800">
-                {/* Inner content aligned to 1100px container */}
-                <div className="max-w-[1100px] mx-auto px-8 h-full flex items-center justify-between">
+            {/* Navbar Fixed Header */}
+            <nav className="fixed top-0 left-0 right-0 z-50 h-[72px] bg-background border-b border-border">
+                <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
                     {/* Logo */}
-                    <Link to="/" className="text-lg font-bold text-white">
+                    <Link
+                        to="/"
+                        className="text-xl font-bold text-white hover:text-primary transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
                         CricGames
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center gap-6">
+                    <div className="hidden md:flex items-center gap-8">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.path}
                                 to={link.path}
-                                className={`text-sm font-medium transition-colors ${isActive(link.path)
-                                        ? 'text-green-400'
-                                        : 'text-neutral-400 hover:text-white'
+                                className={`text-sm font-semibold transition-colors ${isActive(link.path)
+                                        ? 'text-primary'
+                                        : 'text-gray-400 hover:text-white'
                                     }`}
                             >
                                 {link.name}
@@ -46,31 +57,30 @@ function Navbar() {
                         ))}
                     </div>
 
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="md:hidden p-2 text-neutral-400"
-                        aria-label="Toggle menu"
+                        className="md:hidden p-2 text-gray-400 hover:text-white hover:bg-surface rounded-md transition-colors"
+                        aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={isMobileMenuOpen}
                     >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </div>
             </nav>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
-                <div className="fixed top-16 left-0 right-0 z-40 bg-neutral-900 border-b border-neutral-800 md:hidden">
-                    <div className="max-w-[1100px] mx-auto px-8 py-4 space-y-2">
+                <div className="fixed inset-0 top-[72px] z-40 bg-background/95 backdrop-blur-sm md:hidden">
+                    <div className="flex flex-col p-6 space-y-4 border-b border-border bg-background">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.path}
                                 to={link.path}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`block py-2 text-sm font-medium ${isActive(link.path)
-                                        ? 'text-green-400'
-                                        : 'text-neutral-400'
+                                className={`block py-3 px-4 rounded-md text-lg font-medium transition-colors ${isActive(link.path)
+                                        ? 'bg-surface text-primary border border-border'
+                                        : 'text-gray-400 hover:text-white hover:bg-surface/50'
                                     }`}
                             >
                                 {link.name}
@@ -79,6 +89,9 @@ function Navbar() {
                     </div>
                 </div>
             )}
+
+            {/* Spacer for fixed navbar */}
+            <div className="h-[72px]" />
         </>
     );
 }

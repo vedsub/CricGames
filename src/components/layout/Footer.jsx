@@ -1,25 +1,60 @@
-import { Link } from 'react-router-dom';
+import { Github, Twitter, MessageCircle } from 'lucide-react';
 
 /**
- * Footer Layout:
- * - Content aligned to same 1100px container as page content
- * - Simple: logo, links, copyright
+ * Footer Component
+ * 
+ * Requirements:
+ * - dark background (bg-background)
+ * - top border (border-border)
+ * - centered text: "© 2025 CricGames"
+ * - social icons row beneath
+ * - responsive spacing
  */
 function Footer() {
     return (
-        <footer className="border-t border-neutral-800 bg-neutral-900">
-            <div className="max-w-[1100px] mx-auto px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-sm text-neutral-500">
-                    © {new Date().getFullYear()} CricGames
+        <footer className="w-full bg-background border-t border-border py-8 mt-auto">
+            <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-6">
+
+                {/* Copyright Text */}
+                <div className="text-gray-400 text-sm font-medium">
+                    &copy; 2025 CricGames
                 </div>
-                <div className="flex items-center gap-6 text-sm">
-                    <Link to="/" className="text-neutral-400 hover:text-white">
-                        Home
-                    </Link>
-                    <Link to="/about" className="text-neutral-400 hover:text-white">
-                        About
-                    </Link>
+
+                {/* Social Icons Row */}
+                <div className="flex items-center gap-6">
+                    <a
+                        href="https://discord.gg/cricgames"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-gray-500 hover:text-[#5865F2] transition-colors p-2 rounded-full hover:bg-surface"
+                        aria-label="Discord"
+                    >
+                        {/* Using MessageCircle as generic community icon or custom SVG could go here */}
+                        {/* Discord Brand color is #5865F2. Keeping it consistent with Lucide for now. */}
+                        <MessageCircle size={20} />
+                    </a>
+
+                    <a
+                        href="https://github.com/vedsub/CricGames"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-gray-500 hover:text-white transition-colors p-2 rounded-full hover:bg-surface"
+                        aria-label="GitHub"
+                    >
+                        <Github size={20} />
+                    </a>
+
+                    <a
+                        href="https://twitter.com/cricgames"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-gray-500 hover:text-[#1DA1F2] transition-colors p-2 rounded-full hover:bg-surface"
+                        aria-label="Twitter"
+                    >
+                        <Twitter size={20} />
+                    </a>
                 </div>
+
             </div>
         </footer>
     );

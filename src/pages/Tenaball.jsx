@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
+import { Heart, Trophy, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
 import { getRandomQuestion, matchPlayerName } from '../data/tenaball';
 import { bigCelebrate } from '../utils/confetti';
-import PageContainer from '../components/ui/PageContainer';
+import PageContainer from '../components/PageContainer';
 import Card from '../components/ui/Card';
 
 /**
  * Tenaball Layout:
- * - Centered panel, max-width 640px
- * - Vertical flow: Title → Lives/Found → Input+Button → List
- * - List is secondary (below the main interaction)
+ * - Centered Card (max-w-xl)
+ * - Header: Title + Question
+ * - Stats Row: Lives + Found
+ * - Input Row: Input + Button
+ * - List: Ordered 1-10
  */
 function Tenaball() {
     const [question, setQuestion] = useState(null);
@@ -35,7 +38,7 @@ function Tenaball() {
         setGameOver(false);
         setHasWon(false);
         setGuessedNames([]);
-        inputRef.current?.focus();
+        setTimeout(() => inputRef.current?.focus(), 100);
     };
 
     useEffect(() => {
@@ -83,133 +86,128 @@ function Tenaball() {
 
     if (!question) {
         return (
-            <PageContainer maxWidth="640px">
-                <div className="py-16 text-center text-neutral-400">Loading...</div>
+            <PageContainer className="flex items-center justify-center">
+                <div className="text-gray-400 animate-pulse">Loading game...</div>
             </PageContainer>
         );
     }
 
     return (
-        <PageContainer maxWidth="640px">
-            {/* Title */}
-            <div className="text-center mb-6">
-                <h1 className="text-2xl font-bold text-white mb-2">Tenaball</h1>
-                <p className="text-neutral-400">{question.question}</p>
-            </div>
+        <PageContainer className="flex justify-center py-8">
+            <div className="w-full max-w-xl space-y-4">
 
-            {/* Status Card: Lives + Found */}
-            <Card padding="sm" className="mb-6">
-                <div className="flex items-center justify-between text-sm">
-                    <div>
-                        <span className="text-neutral-500">Lives: </span>
-                        <span className="text-white font-medium">{lives}/3</span>
-                    </div>
-                    <div>
-                        <span className="text-neutral-500">Found: </span>
-                        <span className="text-green-400 font-medium">{revealed.length}/10</span>
-                    </div>
+                {/* Mode Header */}
+                <div className="text-center mb-6">
+                    <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight">Tenaball</h1>
+                    <p className="text-gray-400 text-sm font-medium uppercase tracking-wider">Top 10 Challenge</p>
                 </div>
-            </Card>
 
-            {/* Message */}
-            {message && (
-                <div className={`mb-4 p-3 rounded-lg text-sm text-center ${message.type === 'success'
-                    ? 'bg-green-500/10 text-green-400'
-                    : 'bg-red-500/10 text-red-400'
-                    }`}>
-                    {message.text}
-                </div>
-            )}
-
-            {/* Input + Guess Button - Grouped */}
-            {!gameOver && (
-                <form onSubmit={handleGuess} className="mb-8">
-                    <div className="flex gap-2">
-                        <input
-                            ref={inputRef}
-                            type="text"
-                            value={guess}
-                            onChange={(e) => setGuess(e.target.value)}
-                            placeholder="Enter player name..."
-                            className="flex-1 px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white text-sm focus:outline-none focus:border-green-500"
-                            autoComplete="off"
-                        />
-                        <button
-                            type="submit"
-                            disabled={!guess.trim()}
-                            className="px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 disabled:bg-neutral-700 disabled:text-neutral-500"
-                        >
-                            Guess
-                        </button>
+                <Card className="overflow-hidden bg-surface border-border">
+                    {/* Question Header */}
+                    <div className="p-6 border-b border-border bg-background/50">
+                        <h2 className="text-xl font-bold text-white leading-tight">
+                            {question.question}
+                        </h2>
                     </div>
-                </form>
-            )}
 
-            {/* Top 10 List - Secondary */}
-            <div className="space-y-2">
-                {question.answers.map((answer) => {
-                    const isRevealed = revealed.includes(answer.rank);
-                    return (
-                        <div
-                            key={answer.rank}
-                            className={`flex items-center gap-4 px-4 py-3 rounded-lg ${isRevealed
-                                ? 'bg-green-500/10 border border-green-500/20'
-                                : 'bg-neutral-900 border border-neutral-800'
-                                }`}
-                        >
-                            <div className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${isRevealed ? 'bg-green-500 text-white' : 'bg-neutral-800 text-neutral-500'
-                                }`}>
-                                {answer.rank}
-                            </div>
-                            <div className="flex-1">
-                                {isRevealed ? (
-                                    <div>
-                                        <p className="font-medium text-white text-sm">{answer.name}</p>
-                                        <p className="text-xs text-neutral-400">{answer.stat}</p>
-                                    </div>
-                                ) : (
-                                    <div className="h-4 w-32 bg-neutral-800 rounded"></div>
-                                )}
-                            </div>
+                    {/* Stats Bar */}
+                    <div className="flex items-center justify-between px-6 py-4 bg-surface-hover/50 border-b border-border">
+                        <div className="flex items-center gap-2">
+                            <Heart className={`w-5 h-5 ${lives < 2 ? 'text-red-500 animate-pulse' : 'text-primary'}`} fill={lives > 0 ? "currentColor" : "none"} />
+                            <span className="font-mono font-bold text-white text-lg">{lives}</span>
+                            <span className="text-xs text-gray-500 uppercase font-semibold ml-1">Lives</span>
                         </div>
-                    );
-                })}
-            </div>
+                        <div className="flex items-center gap-2">
+                            <Trophy className="w-5 h-5 text-yellow-400" />
+                            <span className="font-mono font-bold text-white text-lg">{revealed.length}/10</span>
+                            <span className="text-xs text-gray-500 uppercase font-semibold ml-1">Found</span>
+                        </div>
+                    </div>
 
-            {/* Game Over */}
-            {gameOver && (
-                <Card className="mt-8 text-center">
-                    <h2 className={`text-xl font-bold mb-2 ${hasWon ? 'text-green-400' : 'text-red-400'}`}>
-                        {hasWon ? 'Perfect Score!' : 'Game Over'}
-                    </h2>
-                    <p className="text-sm text-neutral-400 mb-4">
-                        You found {revealed.length}/10
-                    </p>
-
-                    {!hasWon && (
-                        <div className="bg-neutral-800 rounded-lg p-4 mb-4 text-left">
-                            <p className="text-xs text-neutral-500 mb-2">You missed:</p>
-                            <div className="space-y-1">
-                                {question.answers
-                                    .filter(a => !revealed.includes(a.rank))
-                                    .map(a => (
-                                        <p key={a.rank} className="text-sm text-neutral-300">
-                                            #{a.rank} {a.name}
-                                        </p>
-                                    ))
-                                }
-                            </div>
+                    {/* Feedback Message */}
+                    {message && (
+                        <div className={`px-6 py-2 text-sm font-bold flex items-center gap-2 ${message.type === 'success' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
+                            }`}>
+                            {message.type === 'success' ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
+                            {message.text}
                         </div>
                     )}
 
-                    <button
-                        onClick={startNewGame}
-                        className="px-6 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
-                    >
-                        Play Again
-                    </button>
+                    {/* Input Area */}
+                    {!gameOver ? (
+                        <div className="p-6 bg-surface">
+                            <form onSubmit={handleGuess} className="flex gap-2">
+                                <input
+                                    ref={inputRef}
+                                    type="text"
+                                    value={guess}
+                                    onChange={(e) => setGuess(e.target.value)}
+                                    placeholder="Enter player name..."
+                                    className="flex-1 bg-background border border-border rounded-md px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors"
+                                    autoComplete="off"
+                                    autoFocus
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={!guess.trim()}
+                                    className="px-6 py-3 bg-primary text-black font-bold rounded-md hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Guess
+                                </button>
+                            </form>
+                        </div>
+                    ) : (
+                        <div className="p-6 bg-surface text-center">
+                            <h3 className={`text-2xl font-bold mb-2 ${hasWon ? 'text-primary' : 'text-red-500'}`}>
+                                {hasWon ? 'Perfect Score!' : 'Game Over'}
+                            </h3>
+                            <button
+                                onClick={startNewGame}
+                                className="inline-flex items-center gap-2 px-6 py-2 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-colors"
+                            >
+                                <RefreshCw size={16} />
+                                Play Again
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Results List */}
+                    <div className="border-t border-border divide-y divide-border/50">
+                        {question.answers.map((answer) => {
+                            const isRevealed = revealed.includes(answer.rank);
+                            const isMissed = gameOver && !hasWon && !isRevealed;
+
+                            return (
+                                <div
+                                    key={answer.rank}
+                                    className={`flex items-center px-6 py-3 transition-colors ${isRevealed ? 'bg-primary/5' : isMissed ? 'bg-red-500/5' : 'bg-transparent'
+                                        }`}
+                                >
+                                    <div className={`w-8 h-8 flex-shrink-0 flex items-center justify-center rounded font-mono font-bold text-sm mr-4 ${isRevealed ? 'bg-primary text-black' : isMissed ? 'bg-red-500/20 text-red-400' : 'bg-background border border-border text-gray-500'
+                                        }`}>
+                                        {answer.rank}
+                                    </div>
+
+                                    <div className="flex-1">
+                                        {isRevealed || isMissed ? (
+                                            <div className="flex justify-between items-center">
+                                                <span className={`font-bold ${isRevealed ? 'text-white' : 'text-gray-400'}`}>
+                                                    {answer.name}
+                                                </span>
+                                                <span className="text-xs text-gray-500 font-mono">
+                                                    {answer.stat}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <div className="h-2 w-24 bg-border/50 rounded-full" />
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </Card>
-            )}
+            </div>
         </PageContainer>
     );
 }

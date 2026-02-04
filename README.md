@@ -1,4 +1,4 @@
-# 🏏 CricGames(VibeCoded !)
+# CricGames
 
 A collection of cricket-themed mini-games built with React + Firebase.
 
